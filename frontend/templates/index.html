@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.min.js"></script>
+</head>
+<body>
+    <div class="login-container">
+        <h2>Login</h2>
+        <form action="/login" method="post">
+            <input type="text" name="username" placeholder="Username" required>
+            <input type="password" name="password" placeholder="Password" required>
+            <button type="submit">Login</button>
+
+            <p id="counter">Total_Counts: 0</p> <!-- Initial counter value -->
+        </form>
+    </div>
+
+    <!-- Socket.IO Client Code -->
+    <script>
+        // Ensure the DOM is fully loaded before running the socket code
+        window.addEventListener('DOMContentLoaded', (event) => {
+            // Connect to the Socket.IO server
+            var socket = io('http://127.0.0.1:8000'); 
+
+            socket.on('connect', function() {
+                console.log('Connected to the server');
+            });
+
+            socket.on('counter', function(counter) {
+                // Dynamically update the counter value in the HTML
+                var counter_element = document.getElementById("counter");
+                console.log(counter);
+                counter_element.innerText = `Total Count: ${counter}`;
+            });
+        });
+    </script>
+</body>
+</html>
